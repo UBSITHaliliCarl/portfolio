@@ -3,14 +3,14 @@ SET search_path TO portfolio, public;
 INSERT INTO portfolio.course (course_code, course_title, term_taken, units, description)
 VALUES
     ('DBMWEB1', 'Database Management and Web Systems', '1st Sem SY 2026-2027', 3, 'Relational database modeling, SQL constraints, transactions, and ASP.NET Core MVC web applications.'),
-    ('INASEC1', 'Information Assurance and Networking Security', '2nd Sem SY 2025-2026', 3, 'Routing protocols, VLAN segmentation, ACLs, NAT, and Windows/Linux server administration.')
+    ('APPDEV1', 'Application Development', '2nd Sem SY 2025-2026', 3, 'Development of applications and databases using Angular Framework.')
 ON CONFLICT (course_code) DO NOTHING;
 
 INSERT INTO portfolio.project (course_id, project_title, summary, repo_url, video_url)
 SELECT c.course_id,
        'Course & Project Portfolio Web App',
        'Full-stack ASP.NET Core MVC portfolio powered by Npgsql, parameterized SQL, and atomic transactions.',
-       'https://github.com/yourusername/portfolio',
+       'https://github.com/UBSITHaliliCarl/portfolio',
        'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 FROM portfolio.course c
 WHERE c.course_code = 'DBMWEB1'
@@ -18,12 +18,12 @@ ON CONFLICT (course_id, project_title) DO NOTHING;
 
 INSERT INTO portfolio.project (course_id, project_title, summary, repo_url, video_url)
 SELECT c.course_id,
-       'Campus Data Center Topology',
-       'Multi-VLAN enterprise network simulation with OSPF routing, NAT, and hardened firewall policies.',
-       'https://github.com/yourusername/datacenter-lab',
+       'Personal Business Database Plan',
+       'Complete database design and implementation for a personal business.',
+       'https://github.com/UBSITHaliliCarl/FinalProjectAPPDEV1',
        'https://youtu.be/dQw4w9WgXcQ'
 FROM portfolio.course c
-WHERE c.course_code = 'NETSEC3'
+WHERE c.course_code = 'APPDEV1'
 ON CONFLICT (course_id, project_title) DO NOTHING;
 
 INSERT INTO portfolio.project_image (project_id, image_url, caption, sort_order)
