@@ -1,0 +1,15 @@
+﻿@* Views/ImagesEditor/Delete.cshtml *@
+@model portfolio.Models.ProjectImage
+@{ ViewData["Title"] = "Delete Project Image"; }
+
+<h3 class="fw-bold text-danger mb-3">Delete Project Image</h3>
+<div class="card shadow-sm p-4" style="max-width: 640px;">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+    <p>Delete image from <strong>@Model.ProjectTitle</strong>?</p>
+    <img src="@Model.ImageUrl" alt="preview" class="img-fluid rounded mb-3" style="max-height: 220px;" />
+    <form asp-action="Delete" method="post">
+        <input type="hidden" name="id" value="@Model.ImageId" />
+        <button type="submit" class="btn btn-danger">Confirm Delete</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>

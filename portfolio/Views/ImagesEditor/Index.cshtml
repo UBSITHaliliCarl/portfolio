@@ -1,0 +1,36 @@
+﻿@model IEnumerable<portfolio.Models.ProjectImage>
+@{ ViewData["Title"] = "Manage Project Images"; }
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="fw-bold mb-0">Project Images (Editor)</h3>
+    <a asp-action="Create" class="btn btn-primary">+ Add Image</a>
+</div>
+
+<div class="card shadow-sm">
+    <table class="table table-hover mb-0 align-middle">
+        <thead class="table-light">
+            <tr>
+                <th>Preview</th>
+                <th>Project</th>
+                <th>Order</th>
+                <th>Caption</th>
+                <th class="text-end">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var img in Model)
+            {
+                <tr>
+                    <td><img src="@img.ImageUrl" alt="thumb" style="width: 72px; height: 48px; object-fit: cover; border-radius: 4px;" /></td>
+                    <td class="fw-semibold">@img.ProjectTitle</td>
+                    <td>@img.SortOrder</td>
+                    <td>@(img.Caption ?? "—")</td>
+                    <td class="text-end">
+                        <a asp-action="Edit" asp-route-id="@img.ImageId" class="btn btn-sm btn-outline-primary">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@img.ImageId" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,43 @@
+﻿@model IEnumerable<portfolio.Models.Project>
+@{
+    var course = (portfolio.Models.Course)ViewBag.Course;
+    ViewData["Title"] = $"{course.CourseCode} - {course.CourseTitle}";
+}
+
+<a asp-action="Index" class="btn btn-outline-secondary btn-sm mb-3">&larr; Back to Courses</a>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <span class="badge bg-primary mb-2">@course.CourseCode · @course.TermTaken · @course.Units Units</span>
+        <h2 class="fw-bold">@course.CourseTitle</h2>
+        <p class="text-muted mb-0">@course.Description</p>
+    </div>
+</div>
+
+<h4 class="mb-3">Projects in this Course (@Model.Count())</h4>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No projects have been published for this course yet.</div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (var proj in Model)
+        {
+            <div class="col">
+                <a asp-action="Project" asp-route-id="@proj.ProjectId" class="text-decoration-none text-dark">
+                    <div class="card h-100 shadow-sm card-hover">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold">@proj.ProjectTitle</h5>
+                            <p class="card-text text-secondary">@proj.Summary</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 text-primary fw-semibold">
+                            Inspect Project, Images & Demo &rarr;
+                        </div>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+}

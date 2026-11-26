@@ -1,0 +1,63 @@
+﻿@* Views/ProjectsEditor/Create.cshtml *@
+@model portfolio.ViewModels.ProjectFormViewModel
+@{ ViewData["Title"] = "Add Project"; }
+
+<h3 class="fw-bold mb-3">Add Project (Atomic Transaction)</h3>
+<div class="card shadow-sm p-4" style="max-width: 720px;">
+    <form asp-action="Create" method="post" id="projectForm">
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <div class="mb-3">
+            <label asp-for="CourseId" class="form-label"></label>
+            <select asp-for="CourseId" asp-items="Model.Courses" class="form-select">
+                <option value="">-- Select Course --</option>
+            </select>
+            <span asp-validation-for="CourseId" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ProjectTitle" class="form-label"></label>
+            <input asp-for="ProjectTitle" class="form-control" />
+            <span asp-validation-for="ProjectTitle" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Summary" class="form-label"></label>
+            <textarea asp-for="Summary" rows="3" class="form-control"></textarea>
+            <span asp-validation-for="Summary" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="RepoUrl" class="form-label"></label>
+            <input asp-for="RepoUrl" class="form-control" placeholder="https://github.com/user/repo" />
+            <span asp-validation-for="RepoUrl" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="VideoUrl" class="form-label"></label>
+            <input asp-for="VideoUrl" class="form-control" placeholder="https://www.youtube.com/watch?v=..." />
+            <span asp-validation-for="VideoUrl" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ImageUrlsText" class="form-label"></label>
+            <textarea asp-for="ImageUrlsText" rows="5" class="form-control" placeholder="https://example.com/screen1.png&#10;https://example.com/screen2.jpg"></textarea>
+            <span asp-validation-for="ImageUrlsText" id="imageLinesClientError" class="text-danger small"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Save Project & Images</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById("projectForm").addEventListener("submit", function (e) {
+            const box = document.getElementById("ImageUrlsText");
+            const err = document.getElementById("imageLinesClientError");
+            const regex = /^https:\/\/[^\s"'<>]+\.(png|jpe?g|webp|gif|svg)(\?[^\s"'<>]*)?$/i;
+            const lines = box.value.split(/\r?\n/).map(x => x.trim()).filter(x => x.length > 0);
+            for (let i = 0; i < lines.length; i++) {
+                if (!regex.test(lines[i])) {
+                    e.preventDefault();
+                    err.textContent = `Line ${i + 1} is not a valid direct HTTPS image URL: ${lines[i]}`;
+                    return;
+                }
+            }
+        });
+    </script>
+}

@@ -1,0 +1,61 @@
+﻿@model portfolio.Models.Project
+@{
+    ViewData["Title"] = Model.ProjectTitle;
+    var videoId = System.Text.RegularExpressions.Regex.Match(Model.VideoUrl ?? "", @"(?:v=|youtu\.be/|shorts/)([A-Za-z0-9_-]{11})").Groups[1].Value;
+}
+
+<a asp-action="Course" asp-route-id="@Model.CourseId" class="btn btn-outline-secondary btn-sm mb-3">
+    &larr; Back to @Model.CourseCode
+</a>
+
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <span class="badge bg-primary mb-2">@Model.CourseCode — @Model.CourseTitle</span>
+        <h2 class="fw-bold">@Model.ProjectTitle</h2>
+        <p class="fs-5 text-secondary">@Model.Summary</p>
+
+        @if (!string.IsNullOrWhiteSpace(Model.RepoUrl))
+        {
+            <a href="@Model.RepoUrl" target="_blank" rel="noopener" class="btn btn-dark btn-sm">
+                View Source Repository
+            </a>
+        }
+    </div>
+</div>
+
+@if (videoId != "")
+{
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">Project Video Demo</h5>
+            <div class="ratio ratio-16x9" style="max-width: 720px;">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/@videoId" title="Project demo" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+}
+
+<h4 class="mb-3">Project Screenshots (@Model.Images.Count)</h4>
+@if (!Model.Images.Any())
+{
+    <p class="text-muted">No screenshots attached to this project.</p>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-2 g-4">
+        @foreach (var img in Model.Images)
+        {
+            <div class="col">
+                <div class="card shadow-sm h-100">
+                    <img src="@img.ImageUrl" class="card-img-top" alt="@(img.Caption ?? Model.ProjectTitle)" style="max-height: 320px; object-fit: cover;" />
+                    @if (!string.IsNullOrWhiteSpace(img.Caption))
+                    {
+                        <div class="card-body">
+                            <p class="card-text text-muted small mb-0">@img.Caption</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

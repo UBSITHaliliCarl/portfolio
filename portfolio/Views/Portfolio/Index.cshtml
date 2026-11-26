@@ -1,0 +1,40 @@
+﻿@model IEnumerable<portfolio.Models.Course>
+@{
+    ViewData["Title"] = "Courses";
+}
+
+<div class="hero-banner p-4 p-md-5 mb-4 shadow-sm">
+    <h1 class="fw-bold mb-2">Course & Project Portfolio</h1>
+    <p class="mb-3 opacity-75">Explore completed academic courses, software systems, and lab builds.</p>
+    <form method="get" asp-action="Index" class="row g-2" style="max-width: 520px;">
+        <div class="col">
+            <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Search course code, title, or term..." />
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-light fw-semibold">Search</button>
+        </div>
+    </form>
+</div>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    @foreach (var course in Model)
+    {
+        <div class="col">
+            <a asp-action="Course" asp-route-id="@course.CourseId" class="text-decoration-none text-dark">
+                <div class="card h-100 shadow-sm card-hover">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="badge bg-primary fs-6">@course.CourseCode</span>
+                            <span class="text-muted small">@course.TermTaken · @course.Units Units</span>
+                        </div>
+                        <h5 class="card-title fw-bold">@course.CourseTitle</h5>
+                        <p class="card-text text-secondary">@course.Description</p>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 text-primary fw-semibold">
+                        View Course Projects &rarr;
+                    </div>
+                </div>
+            </a>
+        </div>
+    }
+</div>

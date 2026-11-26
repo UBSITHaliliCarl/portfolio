@@ -1,0 +1,41 @@
+﻿@* Views/CoursesEditor/Edit.cshtml *@
+@model portfolio.ViewModels.CourseFormViewModel
+@{ ViewData["Title"] = "Edit Course"; }
+
+<h3 class="fw-bold mb-3">Edit Course</h3>
+<div class="card shadow-sm p-4" style="max-width: 640px;">
+    <form asp-action="Edit" method="post">
+        <input type="hidden" asp-for="CourseId" />
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <div class="mb-3">
+            <label asp-for="CourseCode" class="form-label"></label>
+            <input asp-for="CourseCode" class="form-control" />
+            <span asp-validation-for="CourseCode" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="CourseTitle" class="form-label"></label>
+            <input asp-for="CourseTitle" class="form-control" />
+            <span asp-validation-for="CourseTitle" class="text-danger small"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-8 mb-3">
+                <label asp-for="TermTaken" class="form-label"></label>
+                <input asp-for="TermTaken" class="form-control" />
+                <span asp-validation-for="TermTaken" class="text-danger small"></span>
+            </div>
+            <div class="col-md-4 mb-3">
+                <label asp-for="Units" class="form-label"></label>
+                <input asp-for="Units" class="form-control" />
+                <span asp-validation-for="Units" class="text-danger small"></span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" rows="3" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger small"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Course</button>
+        <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

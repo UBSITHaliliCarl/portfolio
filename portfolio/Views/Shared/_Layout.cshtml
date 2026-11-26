@@ -3,48 +3,83 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - portfolio</title>
-    <script type="importmap"></script>
+    <title>@ViewData["Title"] - Academic Portfolio</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/portfolio.styles.css" asp-append-version="true" />
+    <style>
+            body { background-color: #f4f6f9; color: #1e293b; }
+            .navbar-brand { font-weight: 700; letter-spacing: 0.4px; }
+            .hero-banner { background: linear-gradient(135deg, #0f172a, #1e3a8a); color: #fff; border-radius: 0.75rem; }
+            .card { border: none; border-radius: 0.75rem; }
+            .card-hover { transition: transform .15s ease, box-shadow .15s ease; }
+            .card-hover:hover { transform: translateY(-3px); box-shadow: 0 .5rem 1rem rgba(15, 23, 42, .12) !important; }
+    </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">portfolio</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
+    @{
+        var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+        bool isEditorArea = controller.EndsWith("Editor", StringComparison.OrdinalIgnoreCase);
+    }
+
+    <nav class="navbar navbar-expand-lg navbar-dark @(isEditorArea ? "bg-dark" : "bg-primary") shadow-sm mb-4">
+        <div class="container">
+            <a class="navbar-brand" asp-controller="Portfolio" asp-action="Index">
+                @(isEditorArea ? "Portfolio Studio (Editor)" : "Student Course Portfolio")
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto">
+                    @if (isEditorArea)
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="CoursesEditor" asp-action="Index">Courses</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="ProjectsEditor" asp-action="Index">Projects</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="ImagesEditor" asp-action="Index">Images</a></li>
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Portfolio" asp-action="Index">All Courses</a></li>
+                    }
+                </ul>
+
+                <div class="d-flex align-items-center gap-2">
+                    @if (isEditorArea)
+                    {
+                        <a class="btn btn-outline-light btn-sm" asp-controller="Portfolio" asp-action="Index">
+                            Switch to Viewer Side
+                        </a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-warning btn-sm fw-semibold" asp-controller="CoursesEditor" asp-action="Index">
+                            Switch to Editor Side
+                        </a>
+                    }
+
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Sign Out</button>
+                        </form>
+                    }
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - portfolio - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
-    </footer>
+    </nav>
+
+    <main class="container pb-5">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        @RenderBody()
+    </main>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

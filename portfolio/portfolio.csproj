@@ -7,4 +7,16 @@
     <UserSecretsId>713e77b1-2856-4497-b8ad-c53f614cafd6</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="Views\Portfolio\Course.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Views\Portfolio\Course.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Npgsql" Version="11.0.0" />
+  </ItemGroup>
+
 </Project>
